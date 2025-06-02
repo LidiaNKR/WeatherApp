@@ -8,6 +8,7 @@
 import Foundation
 
 enum APIConstant {
+    
     // Базовый URL
     static let baseURL = "https://api.weatherapi.com/v1/forecast.json"
     
@@ -15,8 +16,9 @@ enum APIConstant {
     static let accessKey = "3bc8011781744cd09af123836250106"
 }
 
-// Ссылка  JSON API
 enum APIURL {
+    
+    // Ссылка JSON API
     static func url(query: String, days: Int) -> URL? {
         let baseURL = APIConstant.baseURL
         let asccessKey = "&key=\(APIConstant.accessKey)"

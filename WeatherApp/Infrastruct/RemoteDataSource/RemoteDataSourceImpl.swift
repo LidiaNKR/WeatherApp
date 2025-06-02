@@ -10,7 +10,7 @@ import Combine
 
 final class RemoteDataSourceImpl: FetchWeatherDataSourceInterface {
     
-    func getWeather(query: String, 
+    func getWeather(query: String,
                     days: Int) -> AnyPublisher<WeatherDTO, Error> {
         guard
             let url = APIURL.url(query: query, days: days)
@@ -19,7 +19,20 @@ final class RemoteDataSourceImpl: FetchWeatherDataSourceInterface {
         }
         
         let dataPublisher = URLSession.shared.dataTaskPublisher(for: url)
-            .map(\.data)
+            .tryMap { data, response in
+                
+                if let httpResponse = response as? HTTPURLResponse,
+                    !(200...299).contains(httpResponse.statusCode) {
+                    if let apiError = try? JSONDecoder().decode(APIErrorResponse.self, 
+                                                                from: data) {
+                        throw apiError.error
+                    } else {
+                        throw URLError(.badServerResponse)
+                    }
+                }
+                
+                return data
+            }
             .decode(type: WeatherDTO.self, decoder: JSONDecoder())
             .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()

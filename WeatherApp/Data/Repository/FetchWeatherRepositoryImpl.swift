@@ -16,11 +16,9 @@ final class FetchWeatherRepositoryImpl: FetchWeatherRepositoryInterface {
         self.dataSource = dataSource
     }
     
-    func fetchWeather(query: String, days: Int) -> AnyPublisher<[WeatherEntity], Error> {
+    func fetchWeather(query: String, days: Int) -> AnyPublisher<WeatherEntity, Error> {
         return dataSource.getWeather(query: query, days: days)
-            .map { weatherDTO in
-                weatherDTO.forecast.forecastday.map { WeatherEntity(dto: $0) }
-            }
+            .map { WeatherEntity(from: $0 )}
             .eraseToAnyPublisher()
     }
 }

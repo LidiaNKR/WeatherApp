@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 protocol FetchDailyWeatherUseCaseInterface {
-    func exucute(query: String, days: Int) -> AnyPublisher<[WeatherEntity], Error>
+    func exucute(query: String, days: Int) -> AnyPublisher<WeatherEntity, Error>
 }
 
 final class FetchWeatherUseCaseImpl: FetchDailyWeatherUseCaseInterface {
@@ -20,7 +20,7 @@ final class FetchWeatherUseCaseImpl: FetchDailyWeatherUseCaseInterface {
         self.repository = repository
     }
     
-    func exucute(query: String, days: Int) -> AnyPublisher<[WeatherEntity], Error> {
+    func exucute(query: String, days: Int) -> AnyPublisher<WeatherEntity, Error> {
         repository.fetchWeather(query: query, days: days)
     }
 }

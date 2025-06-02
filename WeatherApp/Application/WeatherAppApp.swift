@@ -10,15 +10,15 @@ import SwiftUI
 @main
 struct WeatherAppApp: App {
     
+    // MARK: - Properties
+    
+    private let container = AppContainer.shared
+    
+    // MARK: - Scene
+    
     var body: some Scene {
-        
-        // TODO: Убрать в DI
-        let repository = FetchWeatherRepositoryImpl(dataSource: RemoteDataSourceImpl())
-        let useCase = FetchWeatherUseCaseImpl(repository: repository)
-        let viewModel = DailyWeatherViewModel(useCase: useCase)
-        
         WindowGroup {
-            DailyWeatherView(viewModel: viewModel)
+            DailyWeatherView(viewModel: container.makeDailyWeatherViewModel())
         }
     }
 }

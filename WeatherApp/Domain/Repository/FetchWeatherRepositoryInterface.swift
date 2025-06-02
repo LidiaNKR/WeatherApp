@@ -9,5 +9,5 @@ import Foundation
 import Combine
 
 protocol FetchWeatherRepositoryInterface {
-    func fetchWeather(query: String, days: Int) -> AnyPublisher<[WeatherEntity], Error>
+    func fetchWeather(query: String, days: Int) -> AnyPublisher<WeatherEntity, Error>
 }
